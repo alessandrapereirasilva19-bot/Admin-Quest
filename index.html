@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172d39">
+<meta name="description" content="ADMIN QUEST: transforme seus estudos de Técnico em Administração em uma aventura RPG.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>ADMIN QUEST</title>
+<style>
+:root{color-scheme:dark;--bg:#101b22;--panel:#1b2b34;--panel2:#223741;--line:#344b55;--text:#f1f5f4;--muted:#a9b9bd;--gold:#e3b85d;--green:#50bd8a;--blue:#80bde0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+header{padding:22px 18px 18px;background:linear-gradient(135deg,#172d39,#31545a 65%,#80613b);border-radius:0 0 24px 24px}
+.brand{display:flex;justify-content:space-between;font-size:12px;letter-spacing:2px;color:#dce9e7}.hero{font-size:30px;font-weight:850;line-height:1.05;margin:23px 0 8px}.sub{color:#d2dfdc;font-size:14px}
+.profile{display:flex;justify-content:space-between;align-items:end;margin-top:24px}.avatar{font-size:46px}.small{font-size:12px;color:var(--muted)}.name{font-size:20px;font-weight:750}
+main{padding:15px;max-width:700px;margin:auto}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:14px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}.statnum{font-size:25px;font-weight:800;margin-top:3px}.gold{color:var(--gold)}.progress{height:9px;background:#34454c;border-radius:99px;overflow:hidden;margin-top:10px}.progress>div{height:100%;background:var(--green);width:0%;transition:width .2s}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;gap:7px;padding:9px 10px calc(9px + env(safe-area-inset-bottom));background:#14232a;border-top:1px solid var(--line);z-index:5}nav button{flex:1;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:12px;padding:9px 3px;font-size:12px}nav button.active{background:#31505a;border-color:var(--blue)}
+button{font:inherit;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:#3d9b78;color:white;border:0;border-radius:12px;padding:12px 15px;font-weight:750;width:100%}.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:11px;padding:11px;width:100%}
+h2{font-size:20px;margin:4px 0 3px}h3{font-size:16px;margin:0 0 8px}.muted{color:var(--muted);font-size:13px;line-height:1.5}.section{margin:16px 0}.row{display:flex;align-items:center;gap:12px}.between{display:flex;justify-content:space-between;align-items:center;gap:10px}.emoji{font-size:34px}.tag{font-size:11px;color:var(--green);font-weight:800;letter-spacing:.5px}.locked{opacity:.55}.hidden{display:none!important}
+.lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.lesson-grid .card{padding:12px}.question{padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:15px;margin:12px 0}.option{display:block;width:100%;text-align:left;margin-top:8px;background:var(--panel2);border:1px solid var(--line);color:var(--text);padding:11px;border-radius:10px}.option.selected{border-color:var(--blue);background:#284653}.option.good{border-color:var(--green)}.option.bad{border-color:#d66b6b}
+.timer{font-size:48px;font-weight:850;text-align:center;letter-spacing:2px;padding:14px}.notice{padding:12px;border-radius:12px;background:#263e43;color:#dcece6;font-size:13px;line-height:1.5}.achievement{display:flex;gap:10px;align-items:center}.achievement .emoji{font-size:28px}
+input{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:10px;width:100%}
+footer{text-align:center;color:var(--muted);font-size:11px;padding:20px}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><b>⚔ ADMIN QUEST</b><span>TEMPORADA 01</span></div>
+ <div class="hero">Sua jornada<br>começa aqui.</div>
+ <div class="sub">Aprenda. Evolua. Conquiste sua carreira.</div>
+ <div class="profile"><div><div class="small">PERSONAGEM</div><div class="name">Alessandra</div><div id="levelName" class="small">Nível 1 · Aprendiz</div></div><div class="avatar">🧙‍♀️</div></div>
+</header>
+<main>
+ <div class="stats">
+  <div class="card"><div class="small">EXPERIÊNCIA</div><div id="xp" class="statnum">0</div><div class="small">XP</div></div>
+  <div class="card"><div class="small">MOEDAS</div><div id="coins" class="statnum gold">0</div><div class="small">🪙 moedas</div></div>
+  <div class="card"><div class="small">SEQUÊNCIA</div><div id="streak" class="statnum">0</div><div class="small">🔥 dias</div></div>
+ </div>
+ <section id="levelPanel" class="panel section">
+  <div class="between"><b>Progresso do nível</b><span id="levelProgress" class="small">0 / 100 XP</span></div>
+  <div class="progress"><div id="xpBar"></div></div>
+  <div class="between small" style="margin-top:7px"><span id="levelStart">Nível 1</span><span id="nextLevel">Próximo: Nível 2</span></div>
+ </section>
+
+ <section id="home" class="page">
+  <div class="between section"><h2>🗺️ Mapa de aventuras</h2><span class="small">4 regiões</span></div>
+  <div class="panel row section"><div class="emoji">🏫</div><div style="flex:1"><b>1. Fundamentos da Administração</b><div class="muted">PODC, conceitos e teorias</div><div class="tag">● DISPONÍVEL</div></div>🔓</div>
+  <div class="panel row section locked"><div class="emoji">🏢</div><div style="flex:1"><b>2. Gestão e Organizações</b><div class="muted">Estruturas e processos</div><div class="small">BLOQUEADA</div></div>🔒</div>
+  <div class="panel row section locked"><div class="emoji">💰</div><div style="flex:1"><b>3. Gestão Financeira</b><div class="muted">Custos, receitas e orçamento</div><div class="small">BLOQUEADA</div></div>🔒</div>
+  <div class="panel row section locked"><div class="emoji">🐉</div><div style="flex:1"><b>4. O Grande Chefão</b><div class="muted">Simulado final</div><div class="small">BLOQUEADA</div></div>🔒</div>
+  <div class="panel section"><h3>📜 Missão principal de hoje</h3><p class="muted">Aprender as quatro funções da Administração e vencer o primeiro desafio.</p><button class="primary" onclick="showPage('study')">Iniciar missão →</button></div>
+  <div class="notice">Dica: estude por 30 minutos. O importante é aprender e conseguir explicar o conteúdo sem consultar o resumo.</div>
+ </section>
+
+ <section id="study" class="page hidden">
+  <h2>📚 Sala de estudos</h2><p class="muted">Missão 001 · O despertar da administradora</p>
+  <div class="panel section">
+   <div class="between"><b>⏱️ Cronômetro de estudos</b><span class="small">Meta: 30 min</span></div>
+   <div id="clock" class="timer">30:00</div><div class="progress"><div id="timerBar"></div></div>
+   <p id="timerStatus" class="muted" style="text-align:center">Pronta para começar</p>
+   <div class="row"><button id="timerStart" class="primary">▶ Iniciar</button><button id="timerReset" class="secondary">↺ Reiniciar</button></div>
+  </div>
+  <div class="panel section"><h3>📖 Aula 1: O que é Administração?</h3>
+   <p class="muted">Administração é o processo de planejar, organizar, dirigir e controlar recursos para alcançar objetivos de maneira eficiente e eficaz.</p>
+   <div class="lesson-grid">
+    <div class="card"><b>📋 Planejar</b><p class="muted">Definir objetivos e caminhos.</p></div>
+    <div class="card"><b>🗂️ Organizar</b><p class="muted">Distribuir tarefas e recursos.</p></div>
+    <div class="card"><b>🧭 Dirigir</b><p class="muted">Liderar e orientar pessoas.</p></div>
+    <div class="card"><b>📊 Controlar</b><p class="muted">Medir resultados e corrigir falhas.</p></div>
+   </div>
+   <p class="muted"><b>Macete:</b> PODC = Planejar, Organizar, Dirigir e Controlar.</p>
+  </div>
+  <div class="panel section"><h3>🧠 Para memorizar</h3><p class="muted">Eficiência significa fazer bem, utilizando adequadamente os recursos. Eficácia significa alcançar o resultado desejado.</p><button class="secondary" onclick="complete('lesson',20,5,'Aula estudada')">Concluir aula · +20 XP</button></div>
+  <button class="primary" onclick="showPage('quests')">Ir para os desafios →</button>
+ </section>
+
+ <section id="quests" class="page hidden">
+  <h2>⚔️ Central de missões</h2><p class="muted">Complete tarefas para ganhar XP e moedas.</p>
+  <div class="panel section"><div class="between"><b>Missão 1 · Estudar a aula</b><b class="gold">+20 XP</b></div><p class="muted">Leia o conteúdo da primeira aula.</p><button id="mLesson" class="secondary" onclick="complete('lesson',20,5,'Aula estudada')">Marcar como concluída</button></div>
+  <div class="panel section"><div class="between"><b>Missão 2 · Resolver o quiz</b><b class="gold">+20 XP por acerto</b></div><p class="muted">Responda às cinco perguntas.</p><div id="quiz"></div></div>
+  <div class="panel section"><div class="between"><b>Missão 3 · Revisar</b><b class="gold">+20 XP</b></div><p class="muted">Explique PODC sem consultar o material.</p><button id="mReview" class="secondary" onclick="complete('review',20,5,'Revisão concluída')">Marcar como concluída</button></div>
+  <div class="panel section"><div class="between"><b>Missão 4 · Prova do chefe</b><b class="gold">+50 XP</b></div><p class="muted">Obtenha pelo menos 80% no desafio.</p><div id="bossStatus" class="small">Disponível após o quiz.</div></div>
+ </section>
+
+ <section id="trophies" class="page hidden">
+  <h2>🏆 Sala das conquistas</h2><p class="muted">Suas vitórias ficam registradas neste aparelho.</p>
+  <div id="badges" class="section"></div>
+  <div class="panel section"><h3>📜 Histórico do aventureiro</h3><div id="history" class="muted">Nenhuma missão concluída ainda.</div></div>
+  <button class="secondary" onclick="resetGame()">Reiniciar todo o progresso</button>
+ </section>
+ <footer>ADMIN QUEST · Sua jornada de conhecimento</footer>
+</main>
+<nav>
+ <button class="active" data-page="home">🏰<br>Início</button><button data-page="study">📚<br>Estudar</button><button data-page="quests">⚔️<br>Missões</button><button data-page="trophies">🏆<br>Conquistas</button>
+</nav>
+<script>
+const KEY='adminquest_progress_v1';
+const fresh=()=>({xp:0,coins:0,completed:[],quizDone:false,quizScore:0,streak:0,lastDay:'',history:[]});
+let state;try{state={...fresh(),...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch(e){state=fresh()}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};
+const levels=[['Aprendiz',0],['Estudante',100],['Estrategista',250],['Especialista',500],['Mestre',800],['Lenda',1200]];
+function level(){let n=0;levels.forEach((v,i)=>{if(state.xp>=v[1])n=i});return n}
+function render(){
+ const n=level(),base=levels[n][1],next=levels[n+1]?.[1]||base+500;
+ document.getElementById('xp').textContent=state.xp;document.getElementById('coins').textContent=state.coins;document.getElementById('streak').textContent=state.streak;
+ document.getElementById('levelName').textContent=`Nível ${n+1} · ${levels[n][0]}`;
+ document.getElementById('levelProgress').textContent=`${state.xp-base} / ${next-base} XP`;
+ document.getElementById('xpBar').style.width=Math.min(100,(state.xp-base)/(next-base)*100)+'%';
+ document.getElementById('levelStart').textContent='Nível '+(n+1);document.getElementById('nextLevel').textContent=n===5?'Nível máximo':'Próximo: Nível '+(n+2);
+ document.getElementById('mLesson').textContent=state.completed.includes('lesson')?'✓ Concluída':'Marcar como concluída';document.getElementById('mLesson').disabled=state.completed.includes('lesson');
+ document.getElementById('mReview').textContent=state.completed.includes('review')?'✓ Concluída':'Marcar como concluída';document.getElementById('mReview').disabled=state.completed.includes('review');
+ document.getElementById('bossStatus').textContent=state.completed.includes('boss')?'🐉 Guardião derrotado!':state.quizDone&&state.quizScore>=4?'Você desbloqueou o chefão!':'Desbloqueia com 4 ou 5 acertos no quiz.';
+ const ach=[['📖','Primeiro estudo','lesson'],['🧠','Mente afiada','quiz'],['🔍','Revisora','review'],['🐉','Guardião derrotado','boss'],['⏱️','30 minutos de foco','timer']];
+ document.getElementById('badges').innerHTML=ach.map(([e,t,id])=>`<div class="panel achievement section"><span class="emoji">${state.completed.includes(id)?e:'🔒'}</span><div><b>${t}</b><div class="small">${state.completed.includes(id)?'Conquistada':'Ainda bloqueada'}</div></div></div>`).join('');
+ document.getElementById('history').innerHTML=state.history.length?state.history.map(x=>'• '+x).join('<br>'):'Nenhuma missão concluída ainda.';
+}
+function complete(id,xp,coins,label){if(state.completed.includes(id))return;state.completed.push(id);state.xp+=xp;state.coins+=coins;state.history.unshift(`${label} (+${xp} XP)`);save();render()}
+function showPage(id){document.querySelectorAll('.page').forEach(x=>x.classList.toggle('hidden',x.id!==id));document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));window.scrollTo(0,0)}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>showPage(b.dataset.page)));
+const questions=[
+['Uma empresa deseja aumentar suas vendas em 20% nos próximos seis meses. Qual função está sendo aplicada?',['Organizar','Planejar','Controlar','Dirigir'],1,'Planejar define objetivos e caminhos para alcançá-los.'],
+['O gerente distribui tarefas e responsabilidades entre os funcionários. Qual função está aplicando?',['Organizar','Controlar','Planejar','Avaliar'],0,'Organizar distribui recursos, tarefas e responsabilidades.'],
+['Uma supervisora orienta, lidera e motiva sua equipe. Qual função está exercendo?',['Planejar','Organizar','Dirigir','Controlar'],2,'Dirigir envolve liderança e orientação das pessoas.'],
+['A empresa compara vendas reais com metas e corrige falhas. Qual função está aplicando?',['Dirigir','Organizar','Planejar','Controlar'],3,'Controlar acompanha resultados e corrige desvios.'],
+['Quais são as quatro funções administrativas?',['Comprar, vender, contratar e demitir','Planejar, organizar, dirigir e controlar','Produzir, divulgar, cobrar e pagar','Liderar, vender, comprar e lucrar'],1,'PODC significa Planejar, Organizar, Dirigir e Controlar.']
+];
+let picks={},graded=false;
+function drawQuiz(){
+ const q=document.getElementById('quiz');
+ q.innerHTML=questions.map((v,i)=>`<div class="question"><b>${i+1}. ${v[0]}</b>${v[1].map((a,j)=>`<button class="option ${picks[i]===j?'selected':''}" data-q="${i}" data-a="${j}" ${graded?'disabled':''}>${'ABCD'[j]}. ${a}</button>`).join('')}<div id="ex${i}" class="muted"></div></div>`).join('')+`<button id="grade" class="primary" ${graded||Object.keys(picks).length!==5?'disabled':''}>Corrigir minhas respostas</button><div id="result"></div>`;
+ q.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{picks[b.dataset.q]=+b.dataset.a;drawQuiz()});
+ if(graded){questions.forEach((v,i)=>{document.getElementById('ex'+i).textContent=(picks[i]===v[2]?'✓ Correto. ':'✗ Incorreto. ')+v[3];q.querySelectorAll(`[data-q="${i}"]`).forEach(b=>{if(+b.dataset.a===v[2])b.classList.add('good');else if(+b.dataset.a===picks[i])b.classList.add('bad')})});document.getElementById('result').innerHTML=`<div class="notice">Resultado: ${state.quizScore}/5 acertos. ${state.quizScore>=4?'Guardião desbloqueado! 🐉':'Revise o conteúdo e continue treinando.'}</div>`}
+ const grade=document.getElementById('grade');if(grade&&!graded)grade.onclick=()=>{if(Object.keys(picks).length!==5)return;graded=true;state.quizScore=questions.filter((v,i)=>picks[i]===v[2]).length;state.quizDone=true;if(!state.completed.includes('quiz')){state.completed.push('quiz');state.xp+=state.quizScore*20;state.coins+=state.quizScore*2;state.history.unshift(`Quiz: ${state.quizScore}/5 (+${state.quizScore*20} XP)`);if(state.quizScore>=4){state.completed.push('boss');state.xp+=50;state.coins+=10;state.history.unshift('Guardião derrotado (+50 XP)')}save();render()}drawQuiz()};
+}
+function resetGame(){if(confirm('Apagar todo o progresso deste aparelho?')){state=fresh();save();picks={};graded=false;drawQuiz();render()}}
+let remaining=1800,interval=null;
+function clock(){let m=Math.floor(remaining/60),s=remaining%60;document.getElementById('clock').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');document.getElementById('timerBar').style.width=((1800-remaining)/1800*100)+'%'}
+document.getElementById('timerStart').onclick=()=>{if(interval){clearInterval(interval);interval=null;document.getElementById('timerStart').textContent='▶ Continuar';document.getElementById('timerStatus').textContent='Pausado';return}if(remaining<=0)return;interval=setInterval(()=>{remaining--;clock();if(remaining<=0){clearInterval(interval);interval=null;document.getElementById('timerStart').textContent='Concluído';document.getElementById('timerStatus').textContent='Meta de 30 minutos atingida!';complete('timer',20,5,'Sessão de foco concluída')}},1000);document.getElementById('timerStart').textContent='Ⅱ Pausar';document.getElementById('timerStatus').textContent='Estudando...'};
+document.getElementById('timerReset').onclick=()=>{clearInterval(interval);interval=null;remaining=1800;clock();document.getElementById('timerStart').textContent='▶ Iniciar';document.getElementById('timerStatus').textContent='Pronta para começar'};
+drawQuiz();render();clock();
+if('serviceWorker'in navigator&&location.protocol!=='file:')window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+</script>
+</body></html>

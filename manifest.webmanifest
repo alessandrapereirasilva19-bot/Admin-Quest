@@ -1,0 +1,14 @@
+{
+  "name": "ADMIN QUEST - Estudos RPG",
+  "short_name": "ADMIN QUEST",
+  "description": "Seu jogo de estudos de Técnico em Administração.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#101b22",
+  "theme_color": "#172d39",
+  "orientation": "portrait",
+  "icons": [
+    {"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
